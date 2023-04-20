@@ -1,15 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class Weather {
-  final String description;
+  final String cityName;
   final double temperature;
+  final String description;
+  final IconData weatherIcon;
 
-  Weather({required this.description, required this.temperature});
-
-  factory Weather.fromJson(Map<String, dynamic> json) {
-    String description = json['weather'][0]['description'];
-    double temperature = json['main']['temp'].toDouble();
-
-    return Weather(description: description, temperature: temperature);
-  }
+  Weather({required this.cityName, required this.temperature, required this.description, required this.weatherIcon});
 }
