@@ -72,6 +72,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter the City',
+                          border: OutlineInputBorder(),
+                        ),
+                        controller: _weatherSearch,
+
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          _fetchWeather(1);
+                        },
+                      ),
                       Text(
                         _weather!.cityName,
                         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
@@ -91,20 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         _weather!.description,
                         style: TextStyle(fontSize: 24),
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter the City',
-                          border: OutlineInputBorder(),
-                        ),
-                        controller: _weatherSearch,
 
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          _fetchWeather(1);
-                        },
-                      ),
                       IconButton(
                         icon: Icon(Icons.refresh),
                         onPressed: () {
