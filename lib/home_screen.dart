@@ -13,17 +13,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Weather? _weather;
   bool _loading = true;
 
+  final _weatherSearch = TextEditingController();
+
+
   @override
   void initState() {
     super.initState();
-    _fetchWeather();
+    _fetchWeather(0);
   }
 
-  void _fetchWeather() async {
+  void _fetchWeather(int mode) async {
+    final weather;
     try {
-      final position = await LocationService.getCurrentLocation();
-      final weather = await WeatherApi.getWeatherByLocation(position.latitude, position.longitude);
-      await WeatherStorage.cacheWeather(weather);
+      if (mode == 1) {
+        weather = await WeatherApi.getWeatherByCityName(_weatherSearch.text);
+      }
+      else {
+        final position = await LocationService.getCurrentLocation();
+        weather = await WeatherApi.getWeatherByLocation(position.latitude, position.longitude);
+      }
+
+      if (weather != null) {
+        await WeatherStorage.cacheWeather(weather);
+      }
+
+
+
       setState(() {
         _weather = weather;
         _loading = false;
@@ -75,6 +90,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         _weather!.description,
                         style: TextStyle(fontSize: 24),
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter the City',
+                          border: OutlineInputBorder(),
+                        ),
+                        controller: _weatherSearch,
+
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          _fetchWeather(1);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.refresh),
+                        onPressed: () {
+                          _fetchWeather(0);
+                        },
                       ),
                     ],
                   ),

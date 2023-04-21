@@ -18,6 +18,15 @@ class WeatherApi {
     }
   }
 
+    static Future<Weather> getWeatherByCityName(String cityName) async {
+    final response = await http.get(Uri.parse('$baseUrl?q=$cityName&appid=$apiKey&units=metric'));
+    if (response.statusCode == 200) {
+      return parseWeatherData(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load weather data');
+    }
+  }
+
   static Weather parseWeatherData(Map<String, dynamic> jsonData) {
     final cityName = jsonData['name'];
     final temperature = jsonData['main']['temp'];
